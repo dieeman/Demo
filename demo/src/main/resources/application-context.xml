@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop.xsd 
+	http://www.springframework.org/schema/jdbc 
+	http://www.springframework.org/schema/jdbc/spring-jdbc.xsd"> 
+	<context:property-placeholder location="classpath:dataSource.properties" ignore-unresolvable="true"/>
+	 <context:property-placeholder location="classpath:redis.properties" ignore-unresolvable="true"/>  
+	
+	<!-- 数据源配置 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"    
+        destroy-method="close" lazy-init="false">
+		<property name="driverClass" value="${jdbc_driver}" />
+		<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/maven3?useUnicode=true&amp;characterEncoding=UTF8" />
+		<property name="user" value="${jdbc_username}" />
+		<property name="password" value="${jdbc_password}" />
+		<property name="minPoolSize" value="15" />                            
+ 		<!--连接池中保留的最大连接数。Default: 15 -->    
+        <property name="maxPoolSize" value="30" />           
+		<!--初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->    
+        <property name="initialPoolSize" value="10" />            
+ 		<!--最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->    
+        <property name="maxIdleTime" value="60" />             
+	</bean>
+	
+	<!-- 创建sqlsessionfactory 缓存-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+    	<property name="dataSource" ref="dataSource" />  
+    	<property name="configLocation" value="classpath:SqlMapperConfig.xml"/>  
+	</bean>
+	
+	<!-- 生成缓存 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.fwh.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+	
+	<!-- 事务配置 -->
+	<bean id="txManager"  
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource" />  
+    </bean>
+    
+    <!--  配置事务传播特性 -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+	    <tx:attributes>
+	      <tx:method name="save*" propagation="REQUIRED"/><!-- 事务存在则继续事务，不存在则新建任务 -->
+	      <tx:method name="del*" propagation="REQUIRED"/>
+	      <tx:method name="update*" propagation="REQUIRED"/>
+	      <tx:method name="add*" propagation="REQUIRED"/>
+	      <tx:method name="find*" propagation="REQUIRED"/>
+	      <tx:method name="get*" propagation="REQUIRED"/>
+	      <tx:method name="apply*" propagation="REQUIRED"/>
+	    </tx:attributes>
+	</tx:advice> 
+	
+	<!-- 配置事务切点-->
+	<aop:config>  	
+	<!-- service包下的所有的类的所有的方法都开启事务 -->
+    	<aop:pointcut id="service" expression="execution (* com.fwh.service.*.*(..))"/>  
+    	<aop:advisor advice-ref="txAdvice" pointcut-ref="service"/>  
+	</aop:config>
+	
+	<!-- 配置切面bean -->
+	<bean id="log" class="com.fwh.log.Log"></bean>  
+	<!-- aop切面
+	<aop:config>
+		<aop:aspect id="test" ref="log">			
+			<aop:pointcut id="logtest" expression="execution (* com.fwh.service.*.*(..))"/>
+			<aop:before method="saveLog" pointcut-ref="logtest" />
+	        <aop:after method="saveLog" pointcut-ref="logtest" /> 
+	    </aop:aspect>
+	</aop:config>
+	-->
+	
+	<!-- 注册（service dao） bean  扫描方式--> 	
+	<context:component-scan base-package="com.fwh.service" />
+	<context:component-scan base-package="com.fwh.dao" />	
+	<bean id="SpringGetBean" class="com.fwh.util.SpringGetBean"></bean>	
+	<bean id="redisCacheUtil" class="com.fwh.util.RedisCacheUtil">
+	</bean>
+	
+	<!-- 视图解析配置 -->	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>	
+	<!-- 将redis 加载到spring容器中 -->
+	<import resource="classpath:spring-redis.xml" />
+	<!-- 将定时任务加入到spring容器中
+	<import resource="classpath:spring-quartz.xml" /> 
+	-->
+</beans>

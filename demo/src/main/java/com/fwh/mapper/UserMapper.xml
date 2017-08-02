@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fwh.mapper.UserMapper" >
+	<resultMap id="BaseResultMap" type="com.fwh.domain.User">
+		<id column="id" property="userId"/>
+		<result column="user_name" property="userName" />
+		<result column="user_sex" property="userSex" />
+		<result column="user_age" property="userAge" />
+		<result column="user_addr" property="userAddr" />		
+	</resultMap>
+	<select id="getUser" resultMap="BaseResultMap">
+		select id,user_name,user_age,user_sex,user_Addr from user 
+	</select>
+	<select id="getBoggestUserId" resultType="String">
+		select max(user_id) from user 
+	</select>
+	<select id="getUserByMap" parameterType="HashMap" resultMap="BaseResultMap">
+		select * from user where login_name=#{userName} and password=#{passWord}
+	</select>
+</mapper>

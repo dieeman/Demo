@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-config.dtd">  
+<configuration>
+	<!-- 日志配置 -->
+	<settings>
+		<setting name="logImpl" value="LOG4J" />
+	</settings>
+	<!-- 配置别名  可以在sql语句中使用 也可以不配       可以扫描某个包下的所有类 也可以指定某个类-->
+	<typeAliases>  
+		<package name="com.fwh.domain" />  
+	</typeAliases>		
+	<!-- 注册mapper接口 创建sessionfactory  可以扫描包下的所有接口，也可以指定某个接口-->
+	<mappers>  
+		<package name="com.fwh.mapper" />  
+	</mappers>	  		
+</configuration>
