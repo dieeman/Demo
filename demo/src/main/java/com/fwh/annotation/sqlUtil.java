@@ -25,7 +25,6 @@ public class sqlUtil{
 		}
 		return sqlutil;
 	}
-	
 	public void createTable(String packageName) throws ClassNotFoundException, SQLException{
 		Connection conn= null;
 		PreparedStatement ptsmt=null;

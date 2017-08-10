@@ -70,7 +70,7 @@ public class FileController {
 					e.printStackTrace();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					logger.info("文件保存失败");
+					logger.error("文件保存失败");
 					e.printStackTrace();
 				}
 			}
