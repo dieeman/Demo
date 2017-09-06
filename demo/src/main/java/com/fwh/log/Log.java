@@ -1,31 +1,30 @@
 package com.fwh.log;
-
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
+import com.fwh.util.UserClient;
 
-import com.fwh.util.GetSysClientUser;
 
 /**
- * 日志入库
+ * aop
  * @author dieeman
- *
+ * 需要开启aop注解功能 采用注解才能成功
  */
 @Aspect
+@Component
 public class Log {	
-	/**
-	 * 前置增强
-	 * @param joinPoint
-	 */
-	@Before("execution (com.fwh.service.impl.*.*(..))")
+	@Pointcut("execution (* com.fwh.service.impl.BookServiceImpl.*(..))")
+	public void allmethod(){}
+	@Before("allmethod()")
 	public void saveLog(JoinPoint joinPoint){
 		String methodName = joinPoint.getSignature().getName();//获取方法名
 		//String opContent = optionContent(joinPoint.getArgs(), methodName);
-		System.out.println(methodName);
-		//String userName = GetSysClientUser.getSysClientUserName();
-		//System.out.println("sfs"+userName);
+		System.out.println("前置通知");
+		System.out.println("方法名：  "+methodName);
+		String userName = UserClient.getUserName();
+		System.out.println("操作人："+userName);
 	}
 	
 }

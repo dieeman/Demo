@@ -53,6 +53,11 @@ public class User implements Serializable{
 	public void setUserAddr(String userAddr) {
 		this.userAddr = userAddr;
 	}
+	@Override
+	public String toString() {
+		return "User [loginName=" + loginName + ", userId=" + userId + ", userName=" + userName + ", passWord="
+				+ passWord + ", userAge=" + userAge + ", userSex=" + userSex + ", userAddr=" + userAddr + "]";
+	}
 	
 
 }

@@ -10,5 +10,5 @@ public interface UserMapper {
 	public void addUser();
 	public List<User> getUser();
 	public String getBoggestUserId();
-	public List<User> getUserByMap(HashMap hashmap);
+	public List<User> getUserByMap(HashMap<String, String> hashmap);
 }

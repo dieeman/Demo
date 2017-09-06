@@ -4,95 +4,73 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/bootstrap.min.css">
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/asDatepicker.css">
+<link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css">
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-asDatepicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/layer.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
 <title>添加书籍</title>
 <style type="text/css">
-	.table > tbody > tr > td{
-		border:0;
-	}
-	table > tbody > tr{
-		height:50px;
-	}
-	.calendar-inputWrap{
-		height:34px;
-	}
+
 </style>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$("#calendar").asDatepicker();
-	});
-</script>
+
 </head>
 <body>
-<div id="main" style="width:900px;height:600px">
-<form>
-	<table class="table" style="width:100%">
-		<tr>
-			<td style="width:100px;"><span style="float:right;line-height:34px;">出版时间</span></td>
-			<td style="width:800px;height:34px">
-				<div class="form-group" style="margin-right:0">
-					<input id="calendar" id="publishTime" name="publishTime" type="text" style="width:60%" class="form-control"/>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:100px;"><span style="float:right;line-height:34px">书籍名称</span></td>
-			<td style="width:800px;height:34px">
-				<div class="form-group">
-					<input class="form-control" id="bookName" name="bookName" style="width:60%" type="text"/>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:100px;"><span style="float:right;line-height:34px">书籍作者</span></td>
-			<td style="width:800px">
-				<div class="form-group">
-					<input class="form-control" id="author" name="author" style="width:60%" type="text"/>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:100px;"><span style="float:right;line-height:34px;">库&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存</span></td>
-			<td style="width:800px">
-				<div class="form-group" style="margin-right:0">
-					<input id="repertory" type="text" id="repertory" name="repertory" style="width:60%" class="form-control"/>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:100px;"><span style="float:right;line-height:34px;">书籍类型</span></td>
-			<td style="width:800px">
-				<div class="form-group" style="margin-right:0">
-					<input id="bookType" type="text" id="bookType" name="bookType" style="width:60%" class="form-control"/>
-				</div>
-			</td>
-		</tr>
-		
-							
-	</table>
-	<div style="margin-left:250px;float:left;">
-		<input id="save" type="button" onclick="saves()" class="btn btn-primary" value="保存" />
+<div id="main" style="width:650px;height:600px">
+<form class="layui-form" style="padding-top:30px">
+			
+	<div class="layui-form-item">
+		<label class="layui-form-label">书籍名称</label>
+		<div class="layui-input-block">
+			<input  id="bookName" name="bookName" style="width:500px" type="text" class="layui-input"/>
+		</div>
 	</div>
-	<div style="float:left;margin-left:50px">
-		<input id="cancle" onclick="onCancle()" type="button" class="btn btn-primary" value="取消" />
+	<div class="layui-form-item">
+		<label class="layui-form-label">书籍作者</label>
+		<div class="layui-input-block">
+			<input id="author" name="author" style="width:500px" type="text" class="layui-input"/>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">出版时间</label>
+		<div class="layui-input-block">
+			<input id="calendar" name="publishTime" type="text" style="width:500px" class="layui-input"/>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">库&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存</label>
+		<div class="layui-input-block">
+			<input id="repertory" type="text" id="repertory" name="repertory" style="width:500px" class="layui-input"/>
+		</div>
+	</div>
+		<div class="layui-form-item">
+		<label class="layui-form-label">书籍类型</label>
+		<div class="layui-input-block" style="width:500px">
+		 <select name="bookType" style="width:500px" onclick="getOption(bookType)">
+			  <option value=''>请选择</option>		  
+		 </select>
+		</div>
 	</div>
 </form>
+<div style="margin-top:60px">
+	<div style="margin-left:240px;float:left;">
+		<input id="save" type="button" onclick="saves()" class="layui-btn" value="保存" />
+	</div>
+	<div style="float:left;margin-left:50px">
+		<input id="cancle" onclick="onCancle()" type="button" class="layui-btn" value="取消" />
+	</div>
 </div>
+<div>
 <script>
 	function onCancle(){
-		parent.layer.closeAll();
+		var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
 	}
 	function saves(){
-		debugger;
 		var index = parent.layer.getFrameIndex(window.name);
 		var bookName = $("#bookName").val();
 		var bookType = $("#bookType").val();
 		var author = $("#author").val();
-		var publishTime = $("#publishTime").val();
+		var publishTime = $("#calendar").val();
 		var repertory = $("#repertory").val();
 		if(valcheck()==false){return;}
 		var data = {bookName:bookName,bookType:bookType,author:author,publishTime:publishTime,repertory:repertory};
@@ -101,11 +79,12 @@
 			data:data,
 			type:'post',
 			success:function(data){
-				debugger;
-				if(data!=null||data!=""){										
+				if(data!=null&&data!=""){										
 					layer.msg("添加成功",{icon: 1},function(){
 						parent.layer.close(index);
 					});
+				}else{
+					layer.msg("添加失败",{icon: 2});
 				}
 				//parent.layer.closeAll();
 			},
@@ -120,7 +99,7 @@
 		var bookName = $("#bookName").val();
 		var bookType = $("#bookType").val();
 		var author = $("#author").val();
-		var publishTime = $("#publishTime").val();
+		var publishTime = $("#calendar").val();
 		var repertory = $("#repertory").val();
 		if(bookName==null||bookName==""){
 			layer.msg("请输入书籍名称");
@@ -139,6 +118,29 @@
 			return false;
 		}
 		return true;
+	}
+	layui.use('laydate', function(){
+		  var laydate = layui.laydate;		  
+		  //执行一个laydate实例
+		  laydate.render({
+		    elem: '#calendar' //指定元素
+		    ,theme: '#009688'//设置背景可以自定义颜色
+		  });
+		});
+	layui.use('form');
+	function getOption(a){
+		$.ajax({
+			url:'',
+			data:{a:a},
+			type:'post',
+			success:function(data){
+				if(data!=null){
+					for(var i=0;i<data.data.length;i++){
+						
+					}
+				}
+			}
+		});
 	}
 </script>
 </body>

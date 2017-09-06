@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fwh.dao.DataDao;
-import com.fwh.mapper.DataMapper;
 @Service
 public class DataTransfer {
 	@Autowired

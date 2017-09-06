@@ -29,18 +29,19 @@ public class LoginController {
 	@RequestMapping("/login.do")
 	public String userLogin(ModelMap model,HttpServletRequest req,HttpServletResponse rep) throws IOException, ServletException{	
 		HttpSession session = req.getSession();
+		
 		String userName = req.getParameter("username");
 		String passWord = req.getParameter("password");
-		HashMap hashMap = new HashMap();
+		HashMap<String,String> hashMap = new HashMap<String, String>();
 		hashMap.put("userName", userName);
 		hashMap.put("passWord", passWord);		
-		User user = (User) session.getAttribute("user");
-		if(user!=null){
-			return "main";
-		}else{					
+		//User user = (User) session.getAttribute("user");
+		//if(user!=null){
+			//return "main";
+		//}else{					
 		List<User> userlist = userService.getUserByMap(hashMap);			
 		if(userlist.size()>0){//登陆成功
-			user = userlist.get(0);
+			User user = userlist.get(0);
 			session.setAttribute("user", user);
 			//查询未还书籍
 			List<BorrowBook> borrowlist = borrowService.getBorrowBooks(userlist.get(0).getUserId());
@@ -55,7 +56,7 @@ public class LoginController {
 			return "../index";			
 		}
 	  }
-	}
+	//}
 	@RequestMapping("/logout.do")
 	public String logout(HttpServletRequest req,HttpServletResponse rep){
 		HttpSession session = req.getSession();

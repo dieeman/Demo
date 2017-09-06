@@ -39,7 +39,7 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public List<User> getUserByMap(HashMap hashmap) {
+	public List<User> getUserByMap(HashMap<String, String> hashmap) {
 		// TODO Auto-generated method stub
 		List<User> userlist = useMapper.getUserByMap(hashmap);
 		return userlist;

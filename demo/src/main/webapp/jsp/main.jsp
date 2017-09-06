@@ -7,16 +7,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/mtree.css" >
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" >
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/mtree.css">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/webupload/webuploader.css" >
 	<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery.min.js"></script>
-	<script type="text/javascript" src="<%=request.getContextPath() %>/js/bootstrap.js"></script>	
+	<script type="text/javascript" src="<%=request.getContextPath() %>/js/bootstrap.js"></script>
 	<script type="text/javascript" src='<%=request.getContextPath() %>/js/jquery.velocity.min.js'></script>	
-	<script type="text/javascript" src='<%=request.getContextPath() %>/layui/layui.js'></script>	
 	<script type="text/javascript" src='<%=request.getContextPath() %>/webupload/webuploader.js'></script>
+	<script type="text/javascript" src="<%=request.getContextPath() %>/js/layer.js"></script>
 	<script>
-				
+
 	</script>
 	<style type="text/css">	
 	.webuploader-pick{
@@ -28,14 +27,17 @@
 
 	}
 	#clear{
-		width:20px;
+		width:14px;
 		height:30px;	
 		float:right;
 		padding-top:6px;	
 		cursor: pointer;	
 		display:none;
 	}
-	
+	#rt_rt_1bojbl17acpk70c11sf17hu13i51{
+		width:30px;
+		left:20px;
+	}
 	</style>
 <title>index</title>
 </head>
@@ -93,25 +95,21 @@
 	<div id="main-right">
 		<div id="uploader" class="wu-example">
     		<!--用来存放文件信息-->
-	    	<div id="thelist" class="uploader-list"></div>
-	    	
-	    	<div class="filemes" style="margin:0;width:400px;height:30px;line-height:30px;border:1px solid gray">
-	    	
+	    	<div id="thelist" class="uploader-list"></div>	    	
+	    	<div class="filemes" style="margin:0;width:400px;height:30px;line-height:30px;border:1px solid gray">	    	
 	    		<span style="width:330px;float:left">
-	    			<input type="text" id="copyfilename" style="width:330px;height:25px;display:block;border:0;color:#777">
+	    			<input type="text" id="copyfilename" onfocus="this.blur()"  style="width:330px;height:28px;display:block;border:0;color:#24a092">
 	    			<input type="hidden" name="fileName" id="fileName">
 	    			<input type="hidden" name="fileurl" id="fileUrl">
 	    		</span>	  	    		 
-	    			    				
 	    		<a id="picker"><img src="<%=request.getContextPath()%>/images/upload.png"></a>
 	    		<a id="clear"><img src="<%=request.getContextPath() %>/images/close02.png"></a> 	
-	    	
 	    	</div>		   
 		</div>
 		<input type="button" value="上传" onclick="ok()">
 	</div>
 	<div id="footer">
-		<a href="<%=request.getContextPath() %>/book/getbook.do?bookid=1">查看书籍</a>	
+		<a href="<%=request.getContextPath() %>/book/getallbook.do">查看书籍</a>	
 	</div>
 </div>
 </body>
@@ -120,7 +118,7 @@
 function gettime(){
 	var myDate = new Date();			 
 	var year=myDate.getFullYear(); //获取完整的年份(4位,1970-????)  
-	var month=myDate.getMonth(); //获取当前月份(0-11,0代表1月)  
+	var month=myDate.getMonth()+1; //获取当前月份(0-11,0代表1月)  
 	var day=myDate.getDate(); //获取当前日(1-31)  
 	var date=myDate.getDay(); //获取当前星期X(0-6,0代表星期天)
 	if(date==1){
@@ -139,7 +137,7 @@ function gettime(){
 		date="星期天"
 	}
 	
-	var currenttime=year+"年"+month+"月"+day+"日"+"     "+date;		
+	var currenttime=year+"年"+month+"月"+day+"日"+"&nbsp;&nbsp;&nbsp;&nbsp;"+date;		
 	return currenttime;
 	
 }
@@ -157,35 +155,46 @@ $(document).ready(function(){
 	});
 
 }); --%>
-
-
 var uploader = WebUploader.create({
     // swf文件路径
     swf: '<%=request.getContextPath()%>/webupload/Uploader.swf',
     // 文件接收服务端。
-    server: '<%=request.getContextPath()%>/upload/upload.do',
+    server: '<%=request.getContextPath()%>/file/upload.do',
     // 选择文件的按钮。可选。
     // 内部根据当前运行是创建，可能是input元素，也可能是flash.
     pick: '#picker',
     // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
     resize: false
 });
-var name="";
+var name = "";//文件名称如果有多个则用；隔开
+var num = 0; //上传的文件个数
+var num1=0; // 上传成功的文件个数
+var url=""; // 返回的url
 //文件加入上传队列
-uploader.on( 'fileQueued', function(file) {
-	debugger;	
-	name= name+","+file.name;
-	name = name.substring(1);
-   $("#copyfilename").attr(name);
-   $("#fileName").val()
+uploader.on( 'fileQueued', function(file) {	
+	if(name!=""){
+		name= name+";"+file.name;
+	}else{
+		name=file.name;
+	}
+	num = name.split(";").length;
+   $("#copyfilename").val(name);
+   $("#fileName").val(name);
    $("#clear").css("display",'block');
-});
+});	
+
 //上传成功
 uploader.on( 'uploadSuccess', function(file,response) {
-    var s = response.url;
-    $("#fileUrl").attr(s);
-    alert(s);
-	//alert("success");
+	if(response&&response.url){
+		debugger;
+		url=url+";"+response.url;
+		num1++;
+		if(num==num1){
+			url = url.substring(1);			
+			$("#fileUrl").attr(url);
+		    layer.msg("上传成功",{icon: 1});
+		}
+	}  
 });
 //上传失败
 uploader.on( 'uploadError', function(file) { 
@@ -200,11 +209,15 @@ $("#clear").click(function(){
 function uploadfail(){
 	name="";
 	$("#copyfilename").val("");
-	$("#fileName").val();
+	$("#fileName").val("");
 	$("#clear").css("display",'none');
 	uploader.reset();
 }
 function ok(){
+	if(name==""||name==null){
+		layer.msg("请选择要上传的文件",{icon:7});
+		return false;
+	}
 	uploader.upload();
 }
 </script>

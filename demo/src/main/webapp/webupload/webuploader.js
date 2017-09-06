@@ -946,8 +946,7 @@
     
                 parent = $( opts.container || document.body );
                 container = $( document.createElement('div') );
-    
-                container.attr( 'id', 'rt_' + this.uid );
+                container.attr( 'id', 'rt_'+ this.uid );
                 container.css({
                     position: 'absolute',
                     top: '0px',

@@ -8,6 +8,7 @@
 		<result column="publish_time" property="publishTime" />
 		<result column="repertory" property="repertory" />		
 		<result column="book_type" property="bookType" />
+		<result column="book_add" property="bookAdd" />
 	</resultMap>
 	<select id="getBookById" parameterType="String" resultMap="BaseResultMap">
 		 select *  
@@ -19,8 +20,14 @@
 	<select id="getBiggestBookId" resultType="String">
 		select max(book_id) from book 
 	</select>
-	<insert id="addBook" parameterType="Book">
+	<insert id="addBook" parameterType="Book" >
 		insert into book (book_id,book_name,author,publish_time,repertory)
 		values(#{bookId},#{bookName},#{author},#{publishTime},#{repertory})
 	</insert>
+	<delete id="deleteBook" parameterType="String">
+		delete from book where book_id=#{bookId}
+	</delete>
+	<select id="getAllBook" resultMap="BaseResultMap">
+		select * from book
+	</select>
 </mapper>

@@ -5,8 +5,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 /**
  * 通过spring容器的到bean
- * @author Administrator
- *
+ * @author dieeman
+ * 
  */
 public class SpringGetBean implements ApplicationContextAware{
 	private static ApplicationContext applicationContext;

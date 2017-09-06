@@ -32,6 +32,7 @@ public class Book implements Serializable{
 	 *  ÈºÆ∑‚√ÊÕº∆¨µÿ÷∑
 	 */
 	private String bookUrl;	
+	
 	public String getBookType() {
 		return bookType;
 	}
@@ -73,6 +74,11 @@ public class Book implements Serializable{
 	}
 	public void setBookUrl(String bookUrl) {
 		this.bookUrl = bookUrl;
+	}
+	@Override
+	public String toString() {
+		return "Book [bookId=" + bookId + ", bookName=" + bookName + ", author=" + author + ", publishTime="
+				+ publishTime + ", repertory=" + repertory + ", bookType=" + bookType + ", bookUrl=" + bookUrl + "]";
 	}
 	
 

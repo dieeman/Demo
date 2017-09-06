@@ -5,12 +5,19 @@ import java.util.Calendar;
 import java.util.Date;
 /**
  * 日期工具类
- * @author Administrator
+ * @author dieeman
  *
  */
 public class DateUtil {
+	/**
+	 * 获得当前日期
+	 * @return
+	 */
 	public static String getCurrentDate(){
-		return null;
+		Date dt=new Date();
+		SimpleDateFormat matter1=new SimpleDateFormat("yyyy-MM-dd");
+		String currentDate = matter1.format(dt);
+		return currentDate;
 	}
 	/**
 	 * 获得n天后的日期
@@ -61,6 +68,6 @@ public class DateUtil {
 	
 	public static void main(String args[]) throws ParseException{
 		
-		System.out.println(DateUtil.countMonths("2017-01-06","2017-01-07")); 
+		System.out.println(DateUtil.getCurrentDate()); 
 	}
 }

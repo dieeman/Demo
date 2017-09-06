@@ -9,7 +9,7 @@ public class Test {
 		System.out.println(b);
 	}
 	public static void main(String args[]){
-		Test a =new Test();
+
 
 	}
 }

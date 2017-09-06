@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fwh.dao.UserDao;
 import com.fwh.domain.User;
-import com.fwh.mapper.UserMapper;
 import com.fwh.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,7 +19,7 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 	
-	public List<User> getUserByMap(HashMap hashmap) {
+	public List<User> getUserByMap(HashMap<String, String> hashmap) {
 		// TODO Auto-generated method stub
 		List<User> userlist = userDao.getUserByMap(hashmap);
 		return userlist;
