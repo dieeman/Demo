@@ -5,7 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <!-- 依赖库版本 公共变量 -->
-  <propertiesss>        
+  <properties>        
       <aspectj.version>1.8.4</aspectj.version>
       <spring.version>4.2.9.RELEASE</spring.version>
   </properties>
