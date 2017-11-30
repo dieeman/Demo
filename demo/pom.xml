@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.fwh.ssm</groupId>
   <artifactId>demo</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version>s
   <packaging>war</packaging>
   <!-- 依赖库版本 公共变量 -->
   <properties>        
